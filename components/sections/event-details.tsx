@@ -26,7 +26,7 @@ export function EventDetails() {
     },
     {
       title: 'Theme',
-      value: 'AI Solutions',
+      value: 'Student Innovation',
       icon: Zap,
       description: 'Real-world problems using AI'
     },
@@ -84,14 +84,24 @@ export function EventDetails() {
             })}
           </div>
 
-          {/* More details button and expandable section */}
+          {/* More details button and Whatsapp group button */}
           <div className="mt-8 flex flex-col items-center">
-            <button
-              onClick={() => setShowMore(v => !v)}
-              className="px-6 py-2 rounded-full bg-accent text-accent-foreground font-semibold shadow hover:bg-accent/90 transition-colors"
-            >
-              {showMore ? 'Hide details' : 'More details'}
-            </button>
+            <div className="flex flex-row gap-4">
+              <button
+                onClick={() => setShowMore(v => !v)}
+                className="px-6 py-2 rounded-full bg-accent text-accent-foreground font-semibold shadow hover:bg-accent/90 transition-colors"
+              >
+                {showMore ? 'Hide details' : 'More details'}
+              </button>
+              <a
+                href="https://chat.whatsapp.com/Ddh57KVcVqz8MVBpnftBL1" // TODO: Replace with actual group link
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-full bg-white text-black font-semibold shadow border border-border/40 hover:bg-gray-100 transition-colors flex items-center"
+              >
+                Join Whatsapp group
+              </a>
+            </div>
             {showMore && (
               <div className="mt-6 max-w-2xl text-center text-foreground/80 text-base bg-card/30 rounded-xl p-6 border border-border/30 shadow">
                 KRONE 2026 is a 24-hour national hackathon beginning February 27th at 9:00 AM. From the initial Idea Selection to the grueling All-Night Coding Marathon, participants will be pushed to their creative limits. Supported by continuous meals and midnight refreshments, teams will race against the clock to present their Final Prototypes by the morning of Day 2. The event culminates in a grand Closing Ceremony on February 28th. No Sleep. Pure Innovation.
