@@ -56,6 +56,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
+              onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' })}
               className="border border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold text-base px-8 py-3 rounded-full gap-2 group bg-transparent"
             >
               Learn More

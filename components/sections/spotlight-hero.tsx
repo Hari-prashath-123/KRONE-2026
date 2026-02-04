@@ -250,7 +250,10 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
               Register Now
               <ArrowRight className="w-4 h-4" />
             </ShaderButton>
-            <button className="px-8 py-3 font-semibold rounded-full border-2 border-secondary/30 hover:border-secondary/60 text-foreground hover:text-secondary transition-all flex items-center gap-2 group">
+            <button
+              onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-3 font-semibold rounded-full border-2 border-secondary/30 hover:border-secondary/60 text-foreground hover:text-secondary transition-all flex items-center gap-2 group"
+            >
               Learn More
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>

@@ -91,10 +91,28 @@ export function Timeline() {
               )}
 
               <div className="flex gap-6 pb-12">
-                {/* Timeline dot */}
+                {/* Timeline dot - gold 3-cut ring */}
                 <div className="flex flex-col items-center pt-1">
-                  <div className="relative z-10 w-16 h-16 rounded-full border-2 border-accent/50 bg-background flex items-center justify-center group hover:border-accent transition-colors">
-                    <div className="w-3 h-3 rounded-full bg-accent group-hover:scale-150 transition-transform" />
+                  <div className="relative z-10 w-16 h-16 flex items-center justify-center group">
+                    <svg viewBox="0 0 100 100" className="w-14 h-14" aria-hidden>
+                      <defs>
+                        <linearGradient id={`goldTimelineGradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#D4AF37" />
+                          <stop offset="45%" stopColor="#FFD36E" />
+                          <stop offset="100%" stopColor="#F6E27A" />
+                        </linearGradient>
+                      </defs>
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="34"
+                        fill="none"
+                        stroke={`url(#goldTimelineGradient-${index})`}
+                        strokeWidth="9"
+                        strokeDasharray="50 12 50 12 50 12"
+                        strokeLinecap="butt"
+                      />
+                    </svg>
                   </div>
                 </div>
 

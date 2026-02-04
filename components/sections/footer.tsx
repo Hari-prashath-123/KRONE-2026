@@ -21,15 +21,41 @@ export function Footer() {
           {/* Location */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-white">Location</h3>
-            <div className="flex gap-2">
-              <MapPin className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-              <p className="text-foreground/70 text-sm leading-relaxed">
-                K. Ramakrishnan College of Technology
-                <br />
-                Samayapuram, Tiruchirappalli
-                <br />
-                Tamil Nadu, India
-              </p>
+            <div className="flex gap-2 items-start justify-between">
+              <div className="flex gap-2">
+                <MapPin className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                <p className="text-foreground/70 text-sm leading-relaxed">
+                  K. Ramakrishnan College of Technology
+                  <br />
+                  Samayapuram, Tiruchirappalli
+                  <br />
+                  Tamil Nadu, India
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://chat.whatsapp.com/Ddh57KVcVqz8MVBpnftBL1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Join WhatsApp Group"
+                  className="ml-4 inline-flex items-center justify-center h-9 w-9 rounded-full bg-[#25D366] hover:bg-[#1ebe57] text-white transition-colors"
+                  title="Join WhatsApp Group"
+                >
+                  {/* WhatsApp SVG Icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-5 w-5" fill="currentColor" aria-hidden>
+                    <path d="M19.11 17.04c-.31-.16-1.82-.9-2.1-1-.28-.12-.48-.16-.68.16-.19.31-.74 1-.9 1.2-.16.19-.32.22-.59.07-1.6-.74-2.64-1.95-3.7-3.83-.28-.48.28-.45.82-1.47.09-.15.05-.28-.02-.43-.07-.16-.68-1.63-.93-2.24-.25-.57-.5-.49-.69-.5-.18-.01-.4-.01-.62-.01-.22 0-.57.08-.87.38-.3.29-1.15 1.12-1.15 2.73 0 1.61 1.18 3.17 1.34 3.39.16.22 2.32 3.5 5.63 4.78 3.31 1.28 3.31.86 3.9.81.59-.05 1.92-.78 2.19-1.53.27-.75.27-1.39.19-1.53-.08-.14-.29-.22-.6-.38zM16 3C9.383 3 4 8.383 4 15c0 2.652.93 5.086 2.5 6.99L4 29l7.22-2.37C13.068 27.01 14.5 27.5 16 27.5 22.617 27.5 28 22.117 28 15.5S22.617 3 16 3z" />
+                  </svg>
+                </a>
+
+                <a
+                  href="https://chat.whatsapp.com/Ddh57KVcVqz8MVBpnftBL1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-white hover:text-accent transition-colors"
+                >
+                  Join WhatsApp Group
+                </a>
+              </div>
             </div>
           </div>
         </div>
