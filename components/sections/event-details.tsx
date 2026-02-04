@@ -2,6 +2,7 @@
 
 import { MetallicCard } from '@/components/ui/metallic-card'
 import { Trophy, CreditCard, Users, Zap, Utensils, Clock, Coffee, Check } from 'lucide-react'
+import { useState } from 'react'
 
 export function EventDetails() {
   const details = [
@@ -49,6 +50,8 @@ export function EventDetails() {
     },
   ]
 
+  const [showMore, setShowMore] = useState(false)
+
   return (
     <section id="about" className="py-24 bg-background">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -79,6 +82,21 @@ export function EventDetails() {
                 </MetallicCard>
               )
             })}
+          </div>
+
+          {/* More details button and expandable section */}
+          <div className="mt-8 flex flex-col items-center">
+            <button
+              onClick={() => setShowMore(v => !v)}
+              className="px-6 py-2 rounded-full bg-accent text-accent-foreground font-semibold shadow hover:bg-accent/90 transition-colors"
+            >
+              {showMore ? 'Hide details' : 'More details'}
+            </button>
+            {showMore && (
+              <div className="mt-6 max-w-2xl text-center text-foreground/80 text-base bg-card/30 rounded-xl p-6 border border-border/30 shadow">
+                KRONE 2026 is a 24-hour national hackathon beginning February 27th at 9:00 AM. From the initial Idea Selection to the grueling All-Night Coding Marathon, participants will be pushed to their creative limits. Supported by continuous meals and midnight refreshments, teams will race against the clock to present their Final Prototypes by the morning of Day 2. The event culminates in a grand Closing Ceremony on February 28th. No Sleep. Pure Innovation.
+              </div>
+            )}
           </div>
         </div>
 

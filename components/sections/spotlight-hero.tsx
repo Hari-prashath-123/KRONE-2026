@@ -247,10 +247,15 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 transition-opacity duration-500"
             style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
           >
-            <ShaderButton className="text-base px-8 py-3">
+            <a
+              href="https://forms.gle/eLGi9R2VE3jxFJVp6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base px-8 py-3 inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold transition-colors"
+            >
               Register Now
               <ArrowRight className="w-4 h-4" />
-            </ShaderButton>
+            </a>
             <button
               onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-8 py-3 font-semibold rounded-full border-2 border-secondary/30 hover:border-secondary/60 text-foreground hover:text-secondary transition-all flex items-center gap-2 group"
@@ -265,7 +270,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             className="pt-16 space-y-8 transition-opacity duration-500"
             style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground text-center">
               Organized By & In Association With
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 flex-wrap">

@@ -13,7 +13,7 @@ export function Timeline() {
     {
       time: '10:00 AM - 11:45 AM',
       day: 'Day 1',
-      title: 'Idea selection Round',
+      title: 'Event Kickoff & Challenge Announcement',
       description: 'First challenge - Choose your Idea and working model'
     },
     {
