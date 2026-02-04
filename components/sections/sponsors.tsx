@@ -45,7 +45,7 @@ export function Sponsors() {
             className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
             asChild
           >
-            <a href="mailto:krone@krct.ac.in">
+            <a href="mailto:agenclub.krct@gmail.com">
               <Mail className="w-4 h-4" />
               Contact Organizers
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

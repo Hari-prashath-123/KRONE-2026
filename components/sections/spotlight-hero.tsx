@@ -7,9 +7,29 @@ import { GlowMenu } from '@/components/ui/glow-menu'
 import { MetallicCard } from '@/components/ui/metallic-card'
 import { Calendar, MapPin, ArrowRight, Sparkles } from 'lucide-react'
 
-export function SpotlightHero() {
+interface SpotlightHeroProps {
+  onBootComplete?: () => void
+}
+
+export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
+  const [bootPhase, setBootPhase] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // Boot sequence timing
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setBootPhase(1), 300),     // Phase 1: O appears and spins
+      setTimeout(() => setBootPhase(2), 1800),    // Phase 2: O stops spinning at 90°
+      setTimeout(() => setBootPhase(3), 2300),    // Phase 3: KR and NE slide in
+      setTimeout(() => setBootPhase(4), 3300),    // Phase 4: Intense glow effect
+      setTimeout(() => {
+        setBootPhase(5)                            // Phase 5: Rest of UI fades in
+        onBootComplete?.()
+      }, 4100),
+    ]
+    return () => timers.forEach(clearTimeout)
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -32,6 +52,17 @@ export function SpotlightHero() {
     { label: 'Sponsors', href: '#sponsors' },
   ]
 
+  const scrollToNextSection = () => {
+    if (!containerRef.current) return
+    const next = containerRef.current.nextElementSibling as HTMLElement | null
+    if (next) {
+      next.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      // fallback: scroll down one viewport height
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })
+    }
+  }
+
   return (
     <section
       ref={containerRef}
@@ -50,7 +81,10 @@ export function SpotlightHero() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full space-y-16">
         {/* Navigation */}
-        <div className="flex items-center justify-between pt-2">
+        <div
+          className="flex items-center justify-between pt-2 transition-opacity duration-500"
+          style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+        >
           <div className="flex items-center gap-2">
             <Image
               src="/KRONE%20LOGO.jpg"
@@ -72,7 +106,10 @@ export function SpotlightHero() {
         {/* Hero Content */}
         <div className="space-y-8 text-center pt-2 pb-12">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/20 bg-accent/5 backdrop-blur-sm">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/20 bg-accent/5 backdrop-blur-sm transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
@@ -80,33 +117,118 @@ export function SpotlightHero() {
             <span className="text-sm text-accent font-medium">National Level Hackathon</span>
           </div>
 
-          {/* Main Title */}
+          {/* Main Title with Boot Animation */}
           <div className="space-y-4">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight">
-              <span className="block mb-2">
-                <span className="inline-flex items-center gap-1">
-                  <span className="bg-gradient-to-r from-[#D4AF37] via-[#FFD36E] to-[#F6E27A] bg-clip-text text-transparent font-extrabold">
+              <span className="block mb-2 relative">
+                <span className="inline-flex items-center justify-center gap-1">
+                  {/* KR - slides from left */}
+                  <span
+                    className="bg-gradient-to-r from-[#D4AF37] via-[#FFD36E] to-[#F6E27A] bg-clip-text text-transparent font-extrabold transition-all duration-700"
+                    style={{
+                      opacity: bootPhase >= 3 ? 1 : 0,
+                      transform: bootPhase >= 3 ? 'translateX(0)' : 'translateX(-100px)',
+                      filter: bootPhase === 4 ? 'drop-shadow(0 0 15px rgba(255, 211, 110, 0.8)) drop-shadow(0 0 30px rgba(212, 175, 55, 0.5))' : 'none',
+                    }}
+                  >
                     KR
                   </span>
-                  <span className="bg-gradient-to-r from-white to-[#C0C0C0] bg-clip-text text-transparent font-extrabold">
-                    ONE
+                  
+                  {/* O - SVG ring with 3 cuts */}
+                  <span className="relative inline-flex items-center justify-center" style={{ width: '1em', height: '1em' }}>
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="absolute inset-0 w-full h-full transition-all duration-500"
+                      style={{
+                        opacity: bootPhase >= 1 ? 1 : 0,
+                        animation: bootPhase === 1 ? 'spin 1.5s linear' : 'none',
+                        transform: bootPhase >= 2 ? 'rotate(90deg)' : 'rotate(0deg)',
+                        filter: bootPhase === 4 ? 'drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)) drop-shadow(0 0 40px rgba(96, 165, 250, 0.6)) drop-shadow(0 0 60px rgba(96, 165, 250, 0.4))' : 'none',
+                      }}
+                    >
+                      <defs>
+                        <linearGradient id="silverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#F0F0F0" />
+                          <stop offset="25%" stopColor="#D0E8F2" />
+                          <stop offset="50%" stopColor="#C0C0C0" />
+                          <stop offset="75%" stopColor="#60A5FA" />
+                          <stop offset="100%" stopColor="#A0A0A0" />
+                        </linearGradient>
+                      </defs>
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="32"
+                        fill="none"
+                        stroke="url(#silverGradient)"
+                        strokeWidth="13"
+                        strokeDasharray="58 10"
+                        strokeLinecap="butt"
+                      />
+                    </svg>
+                  </span>
+                  
+                  {/* NE - slides from right */}
+                  <span
+                    className="bg-gradient-to-r from-white to-[#C0C0C0] bg-clip-text text-transparent font-extrabold transition-all duration-700"
+                    style={{
+                      opacity: bootPhase >= 3 ? 1 : 0,
+                      transform: bootPhase >= 3 ? 'translateX(0)' : 'translateX(100px)',
+                      filter: bootPhase === 4 ? 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 30px rgba(192, 192, 192, 0.5))' : 'none',
+                    }}
+                  >
+                    NE
                   </span>
                 </span>
               </span>
-              <span className="text-2xl md:text-4xl font-light text-accent tracking-widest">
+              <span
+                className="text-2xl md:text-4xl font-light text-accent tracking-widest transition-opacity duration-500"
+                style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+              >
                 Build. Innovate. Win Big.
               </span>
             </h1>
           </div>
 
           {/* Description */}
-          <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto leading-relaxed">
+          <p
+            className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto leading-relaxed transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
             A 24-hour national level hackathon organized by the Department of Artificial Intelligence. 
             Solve real-world problems, showcase your skills, and compete for amazing prizes.
           </p>
-
+{/* Down arrow button (moved here after organizers logos) */}
+          <div
+            className="flex justify-center pt-6 transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
+            <button
+              onClick={scrollToNextSection}
+              aria-label="Scroll down"
+              className="p-3 rounded-full border border-accent/20 bg-background/50 hover:bg-accent/5 transition-shadow shadow-sm flex items-center justify-center"
+            >
+              <svg
+                className="h-6 w-6 text-accent/60 animate-bounce"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
           {/* Event Info Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mt-10 pt-4">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mt-10 pt-4 transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
             <MetallicCard
               icon={<Calendar className="w-5 h-5 text-accent" />}
               title="February 27-28, 2026"
@@ -120,7 +242,10 @@ export function SpotlightHero() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
             <ShaderButton className="text-base px-8 py-3">
               Register Now
               <ArrowRight className="w-4 h-4" />
@@ -132,7 +257,10 @@ export function SpotlightHero() {
           </div>
 
           {/* Logos Section */}
-          <div className="pt-16 space-y-8">
+          <div
+            className="pt-16 space-y-8 transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Organized By & In Association With
             </p>
@@ -167,24 +295,10 @@ export function SpotlightHero() {
               />
             </div>
           </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg
-            className="h-6 w-6 text-accent/50"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
-        </div>
+          
+
+        
       </div>
     </section>
   )

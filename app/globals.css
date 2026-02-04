@@ -125,3 +125,84 @@
     font-family: var(--font-sans);
   }
 }
+
+@layer components {
+  /* Apply smooth transitions to most properties site-wide except footer */
+  body :not(footer) * {
+    transition-property: transform, opacity, color, background-color, box-shadow, filter;
+    transition-duration: 260ms;
+    transition-timing-function: cubic-bezier(.2,.9,.2,1);
+  }
+
+  /* Interactive lift/hover for common interactive elements */
+  body :not(footer) a:hover,
+  body :not(footer) button:hover,
+  body :not(footer) .shader-button:hover,
+  body :not(footer) .metallic-card:hover,
+  body :not(footer) .card:hover,
+  body :not(footer) .glow-menu:hover,
+  body :not(footer) .navigation-item:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  }
+
+  /* Subtle image zoom on hover */
+  body :not(footer) img:hover,
+  body :not(footer) .object-contain:hover {
+    transform: scale(1.03);
+    filter: saturate(1.05) brightness(1.02);
+  }
+
+  /* Headings micro-interaction */
+  body :not(footer) h1:hover,
+  body :not(footer) h2:hover {
+    letter-spacing: 0.5px;
+    transform: translateY(-2px);
+  }
+
+  /* Provide a gentle focus outline animation for keyboard users */
+  body :not(footer) a:focus,
+  body :not(footer) button:focus {
+    box-shadow: 0 0 0 4px rgba(212,175,55,0.12), 0 6px 18px rgba(0,0,0,0.12);
+  }
+
+  /* Reveal utility: elements can opt-in to this class for entrance animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 520ms ease, transform 520ms cubic-bezier(.2,.9,.2,1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Slide-in left-to-right animation for headings */
+  @keyframes slide-in-lr {
+    0% {
+      opacity: 0;
+      transform: translateX(-36px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateX(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-lr {
+    animation: slide-in-lr 1200ms cubic-bezier(.2,.9,.2,1) both;
+    will-change: transform, opacity;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    body :not(footer) * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
