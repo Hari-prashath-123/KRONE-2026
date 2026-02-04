@@ -94,7 +94,11 @@ export function Timeline() {
                 {/* Timeline dot - gold 3-cut ring */}
                 <div className="flex flex-col items-center pt-1">
                   <div className="relative z-10 w-16 h-16 flex items-center justify-center group">
-                    <svg viewBox="0 0 100 100" className="w-14 h-14" aria-hidden>
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-14 h-14 animate-[spin_5s_linear_infinite]"
+                      aria-hidden
+                    >
                       <defs>
                         <linearGradient id={`goldTimelineGradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#D4AF37" />

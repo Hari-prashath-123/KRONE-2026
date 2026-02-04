@@ -123,3 +123,6 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes timeline-spin { to { transform: rotate(360deg); } }
+.animate-timeline-spin { animation: timeline-spin 4s linear infinite; }

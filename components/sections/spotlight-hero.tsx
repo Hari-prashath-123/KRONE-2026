@@ -19,14 +19,14 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
   // Boot sequence timing
   useEffect(() => {
     const timers = [
-      setTimeout(() => setBootPhase(1), 300),     // Phase 1: O appears and spins
-      setTimeout(() => setBootPhase(2), 1800),    // Phase 2: O stops spinning at 90°
-      setTimeout(() => setBootPhase(3), 2300),    // Phase 3: KR and NE slide in
-      setTimeout(() => setBootPhase(4), 3300),    // Phase 4: Intense glow effect
+      setTimeout(() => setBootPhase(1), 300),     // Phase 1: O appears and spins slowly
+      setTimeout(() => setBootPhase(2), 1800),    // Phase 2: O accelerates to fast spin (shorter slow spin)
+      setTimeout(() => setBootPhase(3), 2300),    // Phase 3: KR and NE eject while spinning
+      setTimeout(() => setBootPhase(4), 4000),    // Phase 4: O stops, glow effect
       setTimeout(() => {
         setBootPhase(5)                            // Phase 5: Rest of UI fades in
         onBootComplete?.()
-      }, 4100),
+      }, 4800),
     ]
     return () => timers.forEach(clearTimeout)
   }, [])
@@ -141,8 +141,9 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                       className="absolute inset-0 w-full h-full transition-all duration-500"
                       style={{
                         opacity: bootPhase >= 1 ? 1 : 0,
-                        animation: bootPhase === 1 ? 'spin 1.5s linear' : 'none',
-                        transform: bootPhase >= 2 ? 'rotate(90deg)' : 'rotate(0deg)',
+                        animation: bootPhase === 1 ? 'spin 1s linear infinite' : 
+                                  bootPhase === 2 || bootPhase === 3 ? 'spin 0.2s linear infinite' : 'none',
+                        transform: bootPhase >= 4 ? 'rotate(90deg)' : 'rotate(0deg)',
                         filter: bootPhase === 4 ? 'drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)) drop-shadow(0 0 40px rgba(96, 165, 250, 0.6)) drop-shadow(0 0 60px rgba(96, 165, 250, 0.4))' : 'none',
                       }}
                     >

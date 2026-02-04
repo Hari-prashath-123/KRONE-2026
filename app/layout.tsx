@@ -7,7 +7,7 @@ import './globals.css'
 // font setup removed — fonts can be added via CSS or a stable font loader
 
 export const metadata: Metadata = {
-  title: 'KRONE - 24-Hour National Level Hackathon',
+  title: 'KRONE - 26',
   description: 'Join KRONE, a 24-hour national level hackathon organized by the Department of Artificial Intelligence at K. Ramakrishnan College of Technology. Solve real-world problems using AI & emerging technologies.',
   generator: 'v0.app',
   icons: {
