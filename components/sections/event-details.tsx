@@ -14,9 +14,9 @@ export function EventDetails() {
     },
     {
       title: 'Registration Fee',
-      value: '₹1,500',
+      value: '₹100',
       icon: CreditCard,
-      description: 'Per Team'
+      description: 'Per Head'
     },
     {
       title: 'Team Size',
