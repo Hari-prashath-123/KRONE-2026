@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight, Mail, Linkedin } from 'lucide-react'
 
 export function Sponsors() {
   return (
@@ -31,26 +31,45 @@ export function Sponsors() {
                 className="h-auto w-full max-w-lg object-contain"
               />
             </div>
+            
           </div>
+            
         </div>
-
+        <div className="text-center mb-16">
+        <Button
+              variant="outline"
+              size="lg"
+              className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+              asChild
+            >
+              <a href="https://www.linkedin.com/company/isysway/" target="_blank" rel="noopener noreferrer">
+                <Linkedin className="w-4 h-4" />
+                LinkedIn
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
+</div>
         {/* Call to Action */}
         <div className="text-center space-y-6">
           <p className="text-foreground/70 max-w-lg mx-auto">
             Interested in sponsoring KRONE and reaching 100+ brilliant innovators?
           </p>
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
-            asChild
-          >
-            <a href="mailto:agenclub.krct@gmail.com">
-              <Mail className="w-4 h-4" />
-              Contact Organizers
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </Button>
+          <div className="flex items-center justify-center gap-4">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+              asChild
+            >
+              <a href="mailto:agenclub.krct@gmail.com">
+                <Mail className="w-4 h-4" />
+                Contact Organizers
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
+
+          
+          </div>
         </div>
       </div>
     </section>
