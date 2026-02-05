@@ -14,7 +14,7 @@ export function EventDetails() {
     },
     {
       title: 'Registration Fee',
-      value: '₹100',
+      value: '₹200',
       icon: CreditCard,
       description: 'Per Head'
     },
