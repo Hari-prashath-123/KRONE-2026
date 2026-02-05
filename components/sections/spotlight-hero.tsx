@@ -15,6 +15,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
   const [bootPhase, setBootPhase] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const [isSticky, setIsSticky] = useState(false)
 
   // Boot sequence timing
   useEffect(() => {
@@ -27,6 +29,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
         setBootPhase(5)                            // Phase 5: Rest of UI fades in
         onBootComplete?.()
       }, 4800),
+      setTimeout(() => setBootPhase(6), 5200),    // Phase 6: Keep O spinning slowly infinitely
     ]
     return () => timers.forEach(clearTimeout)
   }, [])
@@ -43,6 +46,17 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!headerRef.current) return
+      const threshold = headerRef.current.offsetHeight
+      setIsSticky(window.scrollY > threshold)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const menuItems = [
@@ -82,7 +96,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full space-y-16">
         {/* Navigation */}
         <div
-          className="flex items-center justify-between pt-2 transition-opacity duration-500"
+          ref={headerRef}
+          className={`flex items-center justify-between transition-all duration-300 ${isSticky ? 'py-2 fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-accent/10 shadow-md' : 'py-6'}`}
           style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
         >
           <div className="flex items-center gap-2">
@@ -91,9 +106,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
               alt="KRONE"
               width={96}
               height={96}
-              className="h-40 w-40 object-contain"
+              className={isSticky ? 'h-16 w-16 object-contain transition-all duration-300 drop-shadow-2xl scale-105 rounded-md' : 'h-40 w-40 object-contain transition-all duration-300'}
             />
-            
           </div>
 
           {/* Glow Menu */}
@@ -102,6 +116,10 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
           {/* Mobile menu indicator */}
           <div className="lg:hidden text-accent text-sm font-medium">Menu</div>
         </div>
+
+          {isSticky && (
+            <div aria-hidden="true" style={{ height: headerRef.current?.offsetHeight ?? 64 }} />
+          )}
 
         {/* Hero Content */}
         <div className="space-y-8 text-center pt-2 pb-12">
@@ -141,19 +159,18 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                       className="absolute inset-0 w-full h-full transition-all duration-500"
                       style={{
                         opacity: bootPhase >= 1 ? 1 : 0,
-                        animation: bootPhase === 1 ? 'spin 1s linear infinite' : 
-                                  bootPhase === 2 || bootPhase === 3 ? 'spin 0.2s linear infinite' : 'none',
-                        transform: bootPhase >= 4 ? 'rotate(90deg)' : 'rotate(0deg)',
-                        filter: bootPhase === 4 ? 'drop-shadow(0 0 20px rgba(96, 165, 250, 0.9)) drop-shadow(0 0 40px rgba(96, 165, 250, 0.6)) drop-shadow(0 0 60px rgba(96, 165, 250, 0.4))' : 'none',
+                        animation: bootPhase === 1 ? 'spin 1s linear infinite' :
+                                  bootPhase === 2 || bootPhase === 3 ? 'spin 0.2s linear infinite' :
+                                  bootPhase === 6 ? 'spin 8s linear infinite' : 'none',
+                        transform: bootPhase === 6 ? 'rotate(0deg)' : (bootPhase >= 4 ? 'rotate(90deg)' : 'rotate(0deg)'),
+                        filter: bootPhase === 4 ? 'drop-shadow(0 0 20px #D4AF37) drop-shadow(0 0 40px rgba(96, 165, 250, 0.6)) drop-shadow(0 0 60px rgba(96, 165, 250, 0.4))' : 'none',
                       }}
                     >
                       <defs>
-                        <linearGradient id="silverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#F0F0F0" />
-                          <stop offset="25%" stopColor="#D0E8F2" />
-                          <stop offset="50%" stopColor="#C0C0C0" />
-                          <stop offset="75%" stopColor="#60A5FA" />
-                          <stop offset="100%" stopColor="#A0A0A0" />
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#FFFFFF" />
+                          <stop offset="90%" stopColor="#FFD36E" />
+                          <stop offset="100%" stopColor="#D4AF37" />
                         </linearGradient>
                       </defs>
                       <circle
@@ -161,7 +178,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                         cy="50"
                         r="32"
                         fill="none"
-                        stroke="url(#silverGradient)"
+                        stroke="url(#goldGradient)"
                         strokeWidth="13"
                         strokeDasharray="58 10"
                         strokeLinecap="butt"
@@ -237,8 +254,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             />
             <MetallicCard
               icon={<MapPin className="w-5 h-5 text-accent" />}
-              title="Tiruchirappalli"
-              description="K. Ramakrishnan College"
+              title="K.Ramakrishnan College of Technology"
+              description="Samayapuram , Tiruchirapalli"
             />
           </div>
 
@@ -296,7 +313,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                 className="h-20 w-20 object-contain rounded-full border border-accent/20"
               />
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/brainiac%20club%20logo-imkB55WSgCU2UBy8PryHmyFgpBKwxe.jpeg"
+                src="/brainiac club logo.jpeg"
                 alt="Brainiac Club"
                 width={100}
                 height={100}

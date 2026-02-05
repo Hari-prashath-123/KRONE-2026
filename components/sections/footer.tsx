@@ -156,7 +156,7 @@ export function Footer() {
             <div className="flex items-center justify-between gap-4 p-3 rounded-lg bg-background/10 border border-border/30">
               <div className="flex items-center gap-3">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/brainiac%20club%20logo-imkB55WSgCU2UBy8PryHmyFgpBKwxe.jpeg"
+                  src="/brainiac club logo.jpeg"
                   alt="Brainiac Syndicate"
                   width={40}
                   height={40}
