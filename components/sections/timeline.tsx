@@ -47,7 +47,7 @@ export function Timeline() {
       description: 'No sleep night for developers'
     },
     {
-      time: '2:45 PM - 3:15 AM',
+      time: '2:45 AM - 3:15 AM',
       day: 'Day 2',
       title: 'Mid Night Refreshment',
       description: 'Mid Night Refreshment will be Provided'
@@ -87,13 +87,13 @@ export function Timeline() {
             <div key={index} className="relative">
               {/* Timeline line */}
               {index !== events.length - 1 && (
-                <div className="absolute left-8 top-20 bottom-0 w-0.5 bg-gradient-to-b from-accent/50 to-transparent" />
+                <div className="absolute left-8 top-20 bottom-0 w-0.5 bg-gradient-to-b from-accent/50 to-transparent z-0" />
               )}
 
               <div className="flex gap-6 pb-12">
                 {/* Timeline dot - gold 3-cut ring */}
                 <div className="flex flex-col items-center pt-1">
-                  <div className="relative z-10 w-16 h-16 flex items-center justify-center group">
+                  <div className="relative z-0 w-16 h-16 flex items-center justify-center group">
                     <svg
                       viewBox="0 0 100 100"
                       className="w-14 h-14 animate-[spin_5s_linear_infinite]"

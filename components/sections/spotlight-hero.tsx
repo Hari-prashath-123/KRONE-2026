@@ -17,6 +17,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const [isSticky, setIsSticky] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Boot sequence timing
   useEffect(() => {
@@ -113,13 +114,62 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
           {/* Glow Menu */}
           <GlowMenu items={menuItems} className="hidden lg:flex" />
 
-          {/* Mobile menu indicator */}
-          <div className="lg:hidden text-accent text-sm font-medium">Menu</div>
+          {/* Mobile menu toggle (shows gold O icon on mobile) */}
+          <div className="lg:hidden">
+            <button
+              aria-label="Open menu"
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen(v => !v)}
+              className="p-1 rounded-md focus:ring-2 focus:ring-accent/40"
+            >
+              <svg viewBox="0 0 100 100" className="h-9 w-9" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="goldGradientMobile" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FFFFFF" />
+                    <stop offset="60%" stopColor="#FFD36E" />
+                    <stop offset="100%" stopColor="#D4AF37" />
+                  </linearGradient>
+                </defs>
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="28"
+                  fill="none"
+                  stroke="url(#goldGradientMobile)"
+                  strokeWidth="10"
+                  strokeDasharray="40 19 40 19 40 19"
+                  strokeLinecap="butt"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
           {isSticky && (
             <div aria-hidden="true" style={{ height: headerRef.current?.offsetHeight ?? 64 }} />
           )}
+
+          {/* Mobile menu panel */}
+          <div
+            className={`lg:hidden fixed z-40 transform transition-all duration-300 origin-top-right ${mobileMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+            style={{ top: headerRef.current ? headerRef.current.getBoundingClientRect().bottom : 0, right: 16 }}
+            aria-hidden={!mobileMenuOpen}
+          >
+            <div className="rounded-b-lg bg-background/95 backdrop-blur-md border border-accent/10 shadow-md w-56">
+              <nav className="flex flex-col divide-y divide-border/30">
+                {menuItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-right text-foreground hover:bg-accent/5"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </div>
 
         {/* Hero Content */}
         <div className="space-y-8 text-center pt-2 pb-12">

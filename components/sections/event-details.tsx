@@ -53,7 +53,7 @@ export function EventDetails() {
   const [showMore, setShowMore] = useState(false)
 
   return (
-    <section id="about" className="py-24 bg-background">
+    <section id="about" className="py-24 bg-background relative z-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Key Details Grid */}
         <div className="mb-20">
@@ -71,6 +71,7 @@ export function EventDetails() {
                 <MetallicCard
                   key={index}
                   icon={<IconComponent className="w-6 h-6 text-accent" />}
+                  className="relative z-0"
                 >
                   <div className="text-center space-y-3">
                     <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -120,7 +121,7 @@ export function EventDetails() {
             {logistics.map((section, index) => {
               const IconComponent = section.icon
               return (
-                <div key={index} className="space-y-6 p-6 rounded-lg border border-border/50 bg-card/20 hover:bg-card/30 transition-colors">
+                <div key={index} className="space-y-6 p-6 rounded-lg border border-border/50 bg-card/20 hover:bg-card/30 transition-colors relative z-0">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-accent/10">
                       <IconComponent className="w-5 h-5 text-accent" />

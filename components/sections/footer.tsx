@@ -5,11 +5,11 @@ import { Mail, MapPin, Phone, Facebook, Instagram, Linkedin } from 'lucide-react
 
 export function Footer() {
   const coordinators = [
-    { name: 'M.A. Reetha Jeyarani', role: 'Event Coordinator' },
-    { name: 'P.B. Aravind Prasad', role: 'Technical Lead' },
-    { name: 'Vasunthara Devi', role: 'Logistics Coordinator' },
-    { name: 'A. Joshua Issac', role: 'Student Coordinator' },
-    { name: 'D. Deena Rose', role: 'Support Coordinator' },
+    { name: 'Mrs.M.A. Reetha Jeyarani', role: 'Event Coordinator' },
+    { name: 'Mr.P.B. Aravind Prasad', role: 'Technical Lead' },
+    { name: 'Mr.A. Joshua Issac', role: 'Student Coordinator' },
+    { name: 'Ms.H.Vasunthara Devi', role: 'Logistics Coordinator' },
+    { name: 'Mrs.D. Deena Rose', role: 'Support Coordinator' },
   ]
 
   return (
@@ -201,7 +201,7 @@ export function Footer() {
 
         {/* Coordinators */}
         <div className="py-12 border-t border-border/50">
-          <h3 className="text-lg font-bold mb-6 text-white">Event Team</h3>
+          <h3 className="text-lg font-bold mb-6 text-white">Event Staff Coordinators</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {coordinators.map((coordinator, index) => (
               <div
