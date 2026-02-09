@@ -253,7 +253,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                 className="text-2xl md:text-4xl font-light text-accent tracking-widest transition-opacity duration-500"
                 style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
               >
-                Build. Innovate. Win Big.
+                Build. Innovate. Make Impact.
               </span>
             </h1>
           </div>
@@ -340,6 +340,11 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground text-center">
               Organized By & In Association With
             </p>
+            <center>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Department of <span className="text-accent">Artificial Intelligence</span>
+            </h2>
+            </center>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 flex-wrap">
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/college-logo-dD6b8jEBNU7UplCct4L4mjWcuV0Scr.jpg"
