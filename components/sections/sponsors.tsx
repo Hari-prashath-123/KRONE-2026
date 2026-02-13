@@ -34,7 +34,7 @@ export function Sponsors() {
                   />
                 </a>
 
-                <div className="w-full flex justify-center mt-2">
+                <div className="w-full flex justify-center mt-2 space-x-3">
                   <Button
                     variant="outline"
                     size="lg"
@@ -44,6 +44,18 @@ export function Sponsors() {
                     <a href="https://www.linkedin.com/company/isysway/" target="_blank" rel="noopener noreferrer">
                       <Linkedin className="w-4 h-4" />
                       LinkedIn
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+                    asChild
+                  >
+                    <a href="https://www.instagram.com/isysway?utm_source=qr&igsh=eGtxbTh4bThqZWVn" target="_blank" rel="noopener noreferrer">
+                      Instagram
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </a>
                   </Button>
