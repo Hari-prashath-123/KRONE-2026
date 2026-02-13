@@ -8,7 +8,7 @@ export function EventDetails() {
   const details = [
     {
       title: 'Prize Pool',
-      value: '₹18,000',
+      value: '₹14,000',
       icon: Trophy,
       description: 'Total Prize Pool'
     },

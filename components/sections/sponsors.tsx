@@ -21,34 +21,98 @@ export function Sponsors() {
         </div>
 
         <div className="flex items-center justify-center mb-16">
-          <div className="bg-card/20 border border-border/50 rounded-lg p-12 hover:border-accent/30 transition-colors backdrop-blur">
-            <div className="relative h-24 w-full max-w-2xl mx-auto flex items-center justify-center">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sponsor%20logo-pb9Iunkvu51X6shVoFprkbbsosa2S8.jpg"
-                alt="Sponsor Logos"
-                width={500}
-                height={96}
-                className="h-auto w-full max-w-lg object-contain"
-              />
+          <div className="bg-card/20 border border-border/50 rounded-lg p-8 hover:border-accent/30 transition-colors backdrop-blur">
+            <div className="relative h-28 w-full max-w-3xl mx-auto flex items-center justify-center space-x-8">
+              <div className="flex flex-col items-center">
+                <a href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sponsor%20logo-pb9Iunkvu51X6shVoFprkbbsosa2S8.jpg" target="_blank" rel="noopener noreferrer" className="block">
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sponsor%20logo-pb9Iunkvu51X6shVoFprkbbsosa2S8.jpg"
+                    alt="Sponsor Logos"
+                    width={240}
+                    height={72}
+                    className="h-16 object-contain"
+                  />
+                </a>
+
+                <div className="w-full flex justify-center mt-2">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+                    asChild
+                  >
+                    <a href="https://www.linkedin.com/company/isysway/" target="_blank" rel="noopener noreferrer">
+                      <Linkedin className="w-4 h-4" />
+                      LinkedIn
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center">
+                <a href="https://www.linkedin.com/company/moraiscity/" target="_blank" rel="noopener noreferrer" className="block">
+                  <Image
+                    src="/Sponsor 2.png"
+                    alt="MoraisCity"
+                    width={160}
+                    height={72}
+                    className="h-16 object-contain"
+                  />
+                </a>
+                <div className="w-full flex justify-center mt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+                    asChild
+                  >
+                    <a href="https://www.linkedin.com/company/moraiscity/" target="_blank" rel="noopener noreferrer">
+                      <Linkedin className="w-4 h-4" />
+                      LinkedIn
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center">
+                <Image
+                  src="/sponsor 3.png"
+                  alt="Sponsor 3"
+                  width={160}
+                  height={72}
+                  className="h-16 object-contain"
+                />
+                <div className="flex gap-2 mt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+                    asChild
+                  >
+                    <a href="https://www.miphi.in" target="_blank" rel="noopener noreferrer">
+                      <ArrowRight className="w-4 h-4" />
+                      miphi.in
+                    </a>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
+                    asChild
+                  >
+                    <a href="https://www.hyco.ai" target="_blank" rel="noopener noreferrer">
+                      <ArrowRight className="w-4 h-4" />
+                      hyco.ai
+                    </a>
+                  </Button>
+                </div>
+              </div>
             </div>
             
           </div>
-            
         </div>
-        <div className="text-center mb-16">
-        <Button
-              variant="outline"
-              size="lg"
-              className="border-accent/30 hover:border-accent hover:bg-accent/5 text-foreground font-semibold rounded-full gap-2 group bg-transparent"
-              asChild
-            >
-              <a href="https://www.linkedin.com/company/isysway/" target="_blank" rel="noopener noreferrer">
-                <Linkedin className="w-4 h-4" />
-                LinkedIn
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </Button>
-</div>
         {/* Call to Action */}
         <div className="text-center space-y-6">
           <p className="text-foreground/70 max-w-lg mx-auto">
