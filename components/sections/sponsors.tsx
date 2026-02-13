@@ -22,7 +22,7 @@ export function Sponsors() {
 
         <div className="flex items-center justify-center mb-16">
           <div className="bg-card/20 border border-border/50 rounded-lg p-8 hover:border-accent/30 transition-colors backdrop-blur">
-            <div className="relative h-28 w-full max-w-3xl mx-auto flex items-center justify-center space-x-8">
+            <div className="relative w-full max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-6 md:h-28">
               <div className="flex flex-col items-center">
                 <a href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sponsor%20logo-pb9Iunkvu51X6shVoFprkbbsosa2S8.jpg" target="_blank" rel="noopener noreferrer" className="block">
                   <Image
@@ -30,7 +30,7 @@ export function Sponsors() {
                     alt="Sponsor Logos"
                     width={240}
                     height={72}
-                    className="h-16 object-contain"
+                    className="h-16 object-contain max-w-full"
                   />
                 </a>
 
@@ -69,7 +69,7 @@ export function Sponsors() {
                     alt="MoraisCity"
                     width={160}
                     height={72}
-                    className="h-16 object-contain"
+                    className="h-16 object-contain max-w-full"
                   />
                 </a>
                 <div className="w-full flex justify-center mt-2">
@@ -94,7 +94,7 @@ export function Sponsors() {
                   alt="Sponsor 3"
                   width={160}
                   height={72}
-                  className="h-16 object-contain"
+                  className="h-16 object-contain max-w-full"
                 />
                 <div className="flex gap-2 mt-2">
                   <Button
