@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { MetallicCard } from '@/components/ui/metallic-card'
 import { Trophy, CreditCard, Users, Zap, Utensils, Clock, Coffee, Check } from 'lucide-react'
 import { useState } from 'react'
@@ -103,12 +104,27 @@ export function EventDetails() {
                 Join Whatsapp group
               </a>
             </div>
+
+            
             {showMore && (
               <div className="mt-6 max-w-2xl text-center text-foreground/80 text-base bg-card/30 rounded-xl p-6 border border-border/30 shadow">
-                KRONE 2026 is a 24-hour national hackathon beginning February 27th at 9:00 AM. From the initial Idea Selection to the grueling All-Night Coding Marathon, participants will be pushed to their creative limits. Supported by continuous meals and midnight refreshments, teams will race against the clock to present their Final Prototypes by the morning of Day 2. The event culminates in a grand Closing Ceremony on February 28th. No Sleep. Pure Innovation.
+                KRONE 2026 is a 24-hour national hackathon beginning February 27th at 9:00 AM. From the initial Idea Selection to the grueling All-Night Coding Marathon, participants will be pushed to their creative limits. Supported by continuous meals and midnight refreshments, teams will race against the clock to present their Final Prototypes by the morning of Day 2. The event culminates in a grand Closing Ceremony on February 28th. Registration Ends at 23/02/2026. No Sleep. Pure Innovation.
               </div>
             )}
           </div>
+          <center>
+          <div className="mt-6">
+              <a href="/poster.jpeg" target="_blank" rel="noopener noreferrer" className="block">
+                <Image
+                  src="/poster.jpeg"
+                  alt="KRONE 2026 Poster"
+                  width={900}
+                  height={1200}
+                  className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl object-contain rounded-lg shadow-md border border-border/20"
+                />
+              </a>
+            </div>
+            </center>
         </div>
 
         {/* Hospitality & Logistics */}

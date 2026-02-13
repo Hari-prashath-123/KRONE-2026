@@ -19,6 +19,8 @@ export function Navigation() {
               alt="KRONE Logo"
               width={96}
               height={96}
+              loading="eager"
+              priority
               className="h-20 w-20 object-contain"
             />
             <span className="text-lg font-bold text-white hidden sm:inline">KRONE</span>

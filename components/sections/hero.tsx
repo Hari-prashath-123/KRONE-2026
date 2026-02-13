@@ -76,6 +76,8 @@ export function Hero() {
                 alt="K. Ramakrishnan College of Technology"
                 width={100}
                 height={100}
+                loading="eager"
+                priority
                 className="h-20 w-auto object-contain"
               />
 
@@ -85,6 +87,7 @@ export function Hero() {
                 alt="Aegis Club"
                 width={100}
                 height={100}
+                loading="eager"
                 className="h-20 w-20 object-contain rounded-full border border-accent/20"
               />
 
@@ -93,6 +96,7 @@ export function Hero() {
                 alt="Agen Club"
                 width={100}
                 height={100}
+                loading="eager"
                 className="h-20 w-20 object-contain rounded-full border border-accent/20"
               />
 
@@ -101,6 +105,7 @@ export function Hero() {
                 alt="Brainiac Club"
                 width={100}
                 height={100}
+                loading="eager"
                 className="h-20 w-20 object-contain rounded-full border border-accent/20"
               />
             </div>

@@ -30,6 +30,8 @@ export function Sponsors() {
                     alt="Sponsor Logos"
                     width={240}
                     height={72}
+                    loading="eager"
+                    priority
                     className="h-16 object-contain max-w-full"
                   />
                 </a>

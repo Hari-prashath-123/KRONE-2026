@@ -300,7 +300,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             <MetallicCard
               icon={<Calendar className="w-5 h-5 text-accent" />}
               title="February 27-28, 2026"
-              description="24-hour continuous"
+              description="24-hour continuous , Registration Ends 23/02/2026"
             />
             <MetallicCard
               icon={<MapPin className="w-5 h-5 text-accent" />}
@@ -351,6 +351,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                 alt="K. Ramakrishnan College"
                 width={100}
                 height={100}
+                loading="eager"
+                priority
                 className="h-20 w-auto object-contain"
               />
               <Image
@@ -358,6 +360,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                 alt="Aegis Club"
                 width={100}
                 height={100}
+                loading="eager"
                 className="h-20 w-20 object-contain rounded-full border border-accent/20 text-center"
               />
               <Image
@@ -365,6 +368,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
                 alt="Agen Club"
                 width={100}
                 height={100}
+                loading="eager"
                 className="h-20 w-20 object-contain rounded-full border border-accent/20"
               />
               <Image
