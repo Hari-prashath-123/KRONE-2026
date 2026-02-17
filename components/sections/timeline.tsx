@@ -11,34 +11,41 @@ export function Timeline() {
       description: 'Welcome check-in and hackathon orientation'
     },
     {
-      time: '10:00 AM - 11:45 AM',
+      time: '10:00 AM - 11:00 AM',
       day: 'Day 1',
       title: 'Event Kickoff & Challenge Announcement',
       description: 'First challenge - Choose your Idea and working model'
     },
     {
-      time: '1:00 PM - 2:00 PM',
-      day: 'Day 1',
-      title: 'Lunch Break',
-      description: 'Complimentary meal provided'
-    },
-    {
-      time: '6:00 PM - 6:15 PM',
+      time: '11:00 AM - 11:15 AM',
       day: 'Day 1',
       title: 'Refreshment Break',
       description: 'Snacks and beverages provided'
     },
     {
-      time: '6:15 PM - 8:00 PM',
+      time: '12:30 PM - 2:00 PM',
       day: 'Day 1',
-      title: 'Explanation Round',
-      description: 'Present your solutions and ideas'
+      title: 'Round 1 Evaluation',
+      description: 'Evaluation of first round projects (Abstracts) and feedback'
+    },
+    {
+      time: '2:00 PM - 3:00 PM',
+      day: 'Day 1',
+      title: 'Lunch Break',
+      description: 'Complimentary meal provided'
+    },
+    
+    {
+      time: '6:00 PM - 8:00 PM',
+      day: 'Day 1',
+      title: 'Explanation Round 2',
+      description: 'Present your solutions and Prototypes'
     },
     {
       time: '9:00 PM - 10:00 PM',
       day: 'Day 1',
       title: 'Dinner',
-      description: 'Evening meal'
+      description: 'Evening meal will be provided'
     },
     {
       time: '10:00 PM - 9:00 AM',
@@ -61,14 +68,14 @@ export function Timeline() {
     {
       time: '10:00 AM - 12:00 PM',
       day: 'Day 2',
-      title: 'Present your Final Prototype',
-      description: 'Present Your Project to the evaluators'
+      title: 'Round 3 Evaluation',
+      description: 'Present Your Final Project to the Jury and get evaluated'
     },
     {
       time: '12:00 PM - 1:00 PM',
       day: 'Day 2',
       title: 'Closing Ceremony',
-      description: 'Prize and Certificate Distributions'
+      description: 'Winner Announcement and Certificate Distributions'
     },
   ]
 
