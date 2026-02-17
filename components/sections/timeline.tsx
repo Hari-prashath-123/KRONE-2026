@@ -23,7 +23,7 @@ export function Timeline() {
       description: 'Snacks and beverages provided'
     },
     {
-      time: '12:30 PM - 2:00 PM',
+      time: '12:30 PM - 1:30 PM',
       day: 'Day 1',
       title: 'Round 1 Evaluation',
       description: 'Evaluation of first round projects (Abstracts) and feedback'
