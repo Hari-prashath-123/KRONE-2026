@@ -60,13 +60,19 @@ export function Timeline() {
       description: 'Mid Night Refreshment will be Provided'
     },
     {
-      time: '9:00 AM - 10:00 AM',
+      time: '10:00 AM',
+      day: 'Day 2',
+      title: 'Event Conclusion',
+      description: 'Final Project Submission and Judging'
+    },
+    {
+      time: '10:00 AM - 11:00 AM',
       day: 'Day 2',
       title: 'BreakFast',
       description: 'Morning Breakfast will be provided'
     },
     {
-      time: '10:00 AM - 12:00 PM',
+      time: '11:00 AM - 12:00 PM',
       day: 'Day 2',
       title: 'Round 3 Evaluation',
       description: 'Present Your Final Project to the Jury and get evaluated'
