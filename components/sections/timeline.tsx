@@ -36,7 +36,7 @@ export function Timeline() {
     },
     
     {
-      time: '6:00 PM - 8:00 PM',
+      time: '6:00 PM - 7:00 PM',
       day: 'Day 1',
       title: 'Explanation Round 2',
       description: 'Present your solutions and Prototypes'
