@@ -300,7 +300,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             <MetallicCard
               icon={<Calendar className="w-5 h-5 text-accent" />}
               title="February 27-28, 2026"
-              description="24-hour continuous , Registration Ends 23/02/2026"
+              description="24-hour continuous , Registration Ends 23/02/2026 @ 5:00 PM"
             />
             <MetallicCard
               icon={<MapPin className="w-5 h-5 text-accent" />}
