@@ -14,7 +14,13 @@ export function Evaluation() {
     {
       number: 2,
       title: 'Project Prototype Demo',
-      description: 'Showcase your complete working prototype. Demonstrate how your solution addresses real-world problems using AI and emerging technologies.',
+      description: 'Showcase your complete working prototype.',
+      icon: Wrench
+    },
+    {
+      number: 3,
+      title: 'Final Project Presentation',
+      description: 'Showcase your complete working Project. Demonstrate how your solution addresses real-world problems using AI and emerging technologies.',
       icon: Wrench
     },
   ]
@@ -44,7 +50,7 @@ export function Evaluation() {
           <h2 className="text-4xl md:text-5xl font-bold">
             Evaluation <span className="text-accent">Process</span>
           </h2>
-          <p className="text-foreground/60">Two intensive rounds of competition and expert judging</p>
+          <p className="text-foreground/60">Three intensive rounds of competition and expert judging</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
