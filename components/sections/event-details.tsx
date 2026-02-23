@@ -53,6 +53,39 @@ export function EventDetails() {
 
   const [showMore, setShowMore] = useState(false)
 
+  const shortlisted = [
+    { no: 1, team: 'Info-tech innovators', college: "J.J.College of engineering and technology" },
+    { no: 2, team: 'TEAM ANTAGONIST', college: 'Kongunadu arts and science college' },
+    { no: 3, team: "Panda’s", college: 'Sudharsan engineering college' },
+    { no: 4, team: 'cloud tech', college: 'saranathan college of engineering' },
+    { no: 5, team: 'GRIFFINS', college: 'Saranathan College Of Engineering' },
+    { no: 6, team: 'Dracarys', college: 'Saranathan College of Engineering' },
+    { no: 7, team: 'InfiniX', college: 'Saranathan College of Engineering' },
+    { no: 8, team: 'Rage Coders', college: 'SNS College of Engineering' },
+    { no: 9, team: 'BaitBlockers', college: 'Saranathan College of Engineering' },
+    { no: 10, team: 'PHOENIX', college: 'Saranathan College of Engineering' },
+    { no: 11, team: 'PlinkX', college: 'Kalasalingam Academy of Research And Education' },
+    { no: 12, team: 'TechVengers', college: 'M.I.E.T. Engineering College' },
+    { no: 13, team: 'CODEVENGERS', college: 'Dhanalakshmi srinivasan university' },
+    { no: 14, team: 'QUANTUM  FIVE', college: 'DHANALAKSHMI SRINIVASAN UNIVERSITY SCHOOL OF ENGINEERING AND TECHNOLOGY' },
+    { no: 15, team: 'AI Avengers', college: 'KALASALINGAM ACADEMY OF RESEARCH AND EDUCATION' },
+    { no: 16, team: 'Syntax Squad', college: 'kalasalingam University' },
+    { no: 17, team: 'Intellivium', college: 'Saranathan College of Engineering' },
+    { no: 18, team: 'Tri-coders', college: 'Dhanalakshmi srinivasan university' },
+    { no: 19, team: 'Tech Dudes', college: 'Saranathan College of Engineering' },
+    { no: 20, team: 'Innovibe', college: 'Dhanalakshmi Srinivasan Engineering College' },
+    { no: 21, team: 'Team Undefeatable 2.0', college: 'Sudharshan Engineering College' },
+    { no: 22, team: 'Innovtech', college: 'Kalasalingam academy of research and education' },
+    { no: 23, team: 'Rzx', college: 'Kalasalingam university' },
+    { no: 24, team: 'team impactx', college: 'Kalasalingam university' },
+    { no: 25, team: 'Error 404', college: 'M.I.E.T ENGINEERING COLLEGE TRICHY' },
+    { no: 26, team: 'Coders', college: 'Kalasalingam of research academy' },
+    { no: 27, team: 'Team kage', college: 'KALASALINGAM ACADEMEY OF RESEARCH AND EDUCATION' },
+    { no: 28, team: 'PushPullProphecy', college: 'Sudharsan Engineering College' },
+    { no: 29, team: 'Tech titans', college: 'Alagappa Chettiar Government College of Engineering and Technology' },
+    { no: 30, team: 'Ethical Hackers', college: 'Dhanalakshmi Srinivasan University' },
+  ]
+  const [showShortlisted, setShowShortlisted] = useState(false)
   return (
     <section id="about" className="py-24 bg-background relative z-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -125,6 +158,47 @@ export function EventDetails() {
               </a>
             </div>
             </center>
+        </div>
+
+        {/* Shortlisted Teams */}
+        <div className="mb-12">
+          <div className="space-y-3 mb-6 text-center">
+            <h3 className="text-3xl md:text-4xl font-bold">
+              <span className="text-accent">Shortlisted</span> Teams
+            </h3>
+            <p className="text-foreground/60">Top 30 teams shortlisted for KRONE 2026</p>
+          </div>
+          <div className="flex items-center justify-center mb-4">
+            <button
+              onClick={() => setShowShortlisted(s => !s)}
+              className="px-5 py-2 rounded-full bg-accent text-accent-foreground font-semibold shadow hover:bg-accent/90 transition-colors"
+            >
+              {showShortlisted ? 'Hide shortlisted teams' : 'View shortlisted teams'}
+            </button>
+          </div>
+
+          {showShortlisted && (
+            <div className="overflow-x-auto rounded-xl border-2 border-[#D4AF37] bg-card/10 shadow-lg">
+              <table className="min-w-full table-auto border-collapse">
+                <thead className="bg-card/20">
+                  <tr className="border-b-2 border-[#D4AF37]">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-[#D4AF37] tracking-wide border-r border-[#D4AF37]/30">S.No</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-[#D4AF37] tracking-wide border-r border-[#D4AF37]/30">Team Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-[#D4AF37] tracking-wide">College</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-transparent">
+                  {shortlisted.map((row) => (
+                    <tr key={row.no} className="odd:bg-card/10 even:bg-transparent hover:bg-card/30 transition-colors border-b border-[#D4AF37]/10">
+                      <td className="px-4 py-3 text-sm text-foreground/80 border-r border-[#D4AF37]/20">{row.no}</td>
+                      <td className="px-4 py-3 text-sm font-semibold text-white border-r border-[#D4AF37]/20">{row.team}</td>
+                      <td className="px-4 py-3 text-sm text-foreground/80">{row.college}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Hospitality & Logistics */}
