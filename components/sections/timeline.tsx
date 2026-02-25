@@ -4,85 +4,20 @@ import { Clock } from 'lucide-react'
 
 export function Timeline() {
   const events = [
-    {
-      time: '9:00 AM - 10:00 AM',
-      day: 'Day 1',
-      title: 'Registration & Introduction',
-      description: 'Welcome check-in and hackathon orientation'
-    },
-    {
-      time: '10:00 AM - 11:00 AM',
-      day: 'Day 1',
-      title: 'Event Kickoff & Challenge Announcement',
-      description: 'First challenge - Choose your Idea and working model'
-    },
-    {
-      time: '11:00 AM - 11:15 AM',
-      day: 'Day 1',
-      title: 'Refreshment Break',
-      description: 'Snacks and beverages provided'
-    },
-    {
-      time: '12:30 PM - 1:30 PM',
-      day: 'Day 1',
-      title: 'Round 1 Evaluation',
-      description: 'Evaluation of first round projects (Abstracts) and feedback'
-    },
-    {
-      time: '2:00 PM - 3:00 PM',
-      day: 'Day 1',
-      title: 'Lunch Break',
-      description: 'Complimentary meal provided'
-    },
-    
-    {
-      time: '6:00 PM - 7:00 PM',
-      day: 'Day 1',
-      title: 'Explanation Round 2',
-      description: 'Present your solutions and Prototypes'
-    },
-    {
-      time: '9:00 PM - 10:00 PM',
-      day: 'Day 1',
-      title: 'Dinner',
-      description: 'Evening meal will be provided'
-    },
-    {
-      time: '10:00 PM - 9:00 AM',
-      day: 'Day 2',
-      title: 'Continuous Night Developing',
-      description: 'No sleep night for developers'
-    },
-    {
-      time: '2:45 AM - 3:15 AM',
-      day: 'Day 2',
-      title: 'Mid Night Refreshment',
-      description: 'Mid Night Refreshment will be Provided'
-    },
-    {
-      time: '10:00 AM',
-      day: 'Day 2',
-      title: 'Event Conclusion',
-      description: 'Final Project Submission and Judging'
-    },
-    {
-      time: '10:00 AM - 11:00 AM',
-      day: 'Day 2',
-      title: 'BreakFast',
-      description: 'Morning Breakfast will be provided'
-    },
-    {
-      time: '11:00 AM - 12:00 PM',
-      day: 'Day 2',
-      title: 'Round 3 Evaluation',
-      description: 'Present Your Final Project to the Jury and get evaluated'
-    },
-    {
-      time: '12:00 PM - 1:00 PM',
-      day: 'Day 2',
-      title: 'Closing Ceremony',
-      description: 'Winner Announcement and Certificate Distributions'
-    },
+    { time: '10:00 AM - 11:00 AM', day: 'Day 1', title: 'Registration', description: 'Welcome check-in and hackathon orientation' },
+    { time: '11:00 AM - 11:30 AM', day: 'Day 1', title: 'Inauguration', description: 'Opening remarks and welcome' },
+    { time: '11:30 AM - 11:45 AM', day: 'Day 1', title: 'Refreshment', description: 'Snacks and beverages provided' },
+    { time: '12:00 PM', day: 'Day 1', title: 'Event Kick-Off', description: 'First challenge - Choose your Idea and working model' },
+    { time: '1:00 PM - 2:00 PM', day: 'Day 1', title: 'Round 1 Evaluation', description: 'Evaluation of first round projects (Abstracts) and feedback' },
+    { time: '2:00 PM - 3:00 PM', day: 'Day 1', title: 'LUNCH', description: 'Complimentary meal provided' },
+    { time: '2:00 PM - 3:00 PM', day: 'Day 1', title: 'Side Quest 1', description: 'Side Quest 1 Begins with Some Games' },
+    { time: '7:30 PM - 8:30 PM', day: 'Day 1', title: 'Dinner', description: 'Evening meal will be provided' },
+    { time: '10:00 PM - 11:00 PM', day: 'Day 1', title: 'Round 2 Evaluation', description: 'Present your solutions and Prototypes' },
+    { time: '11:00 PM - 1:00 AM', day: 'Day 1-2', title: 'Side Quest 2 ', description: 'Side Quest 2 Begins with new Games' },
+    { time: '8:30 AM - 9:30 AM', day: 'Day 2', title: 'Breakfast', description: 'Morning Breakfast will be provided' },
+    { time: '12:00 PM', day: 'Day 2', title: 'Event Conclusion', description: 'Final Project Submission and Judging' },
+    { time: '12:00 PM - 1:00 PM', day: 'Day 2', title: 'Round 3 Evaluation', description: 'Present Your Final Project to the Jury and get evaluated' },
+    { time: '1:00 PM - 2:00 PM', day: 'Day 2', title: 'Closing Ceremony', description: 'Winner Announcement and Certificate Distributions' },
   ]
 
   return (
