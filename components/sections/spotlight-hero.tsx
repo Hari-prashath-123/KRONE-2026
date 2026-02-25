@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { ShaderButton } from '@/components/ui/shader-button'
 import { GlowMenu } from '@/components/ui/glow-menu'
 import { MetallicCard } from '@/components/ui/metallic-card'
+import { CountdownTimer } from '@/components/countdown-timer'
+import { Celebration } from '@/components/celebration'
 import { Calendar, MapPin, ArrowRight, Sparkles } from 'lucide-react'
 
 interface SpotlightHeroProps {
@@ -18,6 +20,17 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
   const headerRef = useRef<HTMLDivElement>(null)
   const [isSticky, setIsSticky] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showCelebration, setShowCelebration] = useState(false)
+
+  // Check if timer ended on page load
+  useEffect(() => {
+    const timerEnded = localStorage.getItem('timer_ended')
+    if (timerEnded === 'true') {
+      setShowCelebration(true)
+      // Clear the flag so it doesn't show again on next reload
+      localStorage.removeItem('timer_ended')
+    }
+  }, [])
 
   // Boot sequence timing
   useEffect(() => {
@@ -76,6 +89,11 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
       // fallback: scroll down one viewport height
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })
     }
+  }
+
+  // Show celebration if timer ended
+  if (showCelebration) {
+    return <Celebration />
   }
 
   return (
@@ -301,12 +319,16 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
               icon={<Calendar className="w-5 h-5 text-accent" />}
               title="February 27-28, 2026"
               description="24-hour continuous , Registration Ends 23/02/2026 @ 5:00 PM"
-            />
+            >
+              <></>
+            </MetallicCard>
             <MetallicCard
               icon={<MapPin className="w-5 h-5 text-accent" />}
               title="K.Ramakrishnan College of Technology"
               description="Samayapuram , Tiruchirapalli"
-            />
+            >
+              <></>
+            </MetallicCard>
           </div>
 
           {/* CTA Buttons */}
@@ -330,6 +352,14 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
               Learn More
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
+          </div>
+
+          {/* Countdown Timer */}
+          <div
+            className="transition-opacity duration-500"
+            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
+          >
+            <CountdownTimer />
           </div>
 
           {/* Logos Section */}
