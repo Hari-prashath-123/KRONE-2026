@@ -21,6 +21,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
   const [isSticky, setIsSticky] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showCelebration, setShowCelebration] = useState(false)
+  
 
   // Check if timer ended on page load
   useEffect(() => {
@@ -72,6 +73,8 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  
 
   const menuItems = [
     { label: 'Details', href: '#about' },
@@ -354,13 +357,7 @@ export function SpotlightHero({ onBootComplete }: SpotlightHeroProps) {
             </button>
           </div>
 
-          {/* Countdown Timer */}
-          <div
-            className="transition-opacity duration-500"
-            style={{ opacity: bootPhase >= 5 ? 1 : 0 }}
-          >
-            <CountdownTimer />
-          </div>
+          {/* Countdown was moved to its own section above Event Details */}
 
           {/* Logos Section */}
           <div
