@@ -92,13 +92,46 @@ export function ProjectsDone() {
             <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           </div>
         ) : isLocked ? (
-          /* ── Locked state ── */
-          <div className="flex flex-col items-center justify-center py-12 gap-4">
-            <div className="w-16 h-16 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center">
-              <Lock className="w-7 h-7 text-accent" />
+          /* ── Locked state — show submitted projects ── */
+          <div className="space-y-6">
+            {/* Locked banner */}
+            <div className="flex items-center gap-3 bg-card/40 border border-border rounded-xl px-5 py-3">
+              <Lock className="w-4 h-4 text-accent shrink-0" />
+              <p className="text-sm text-foreground/60 font-medium">Submissions are closed</p>
+              <span className="ml-auto text-xs text-foreground/40 bg-card border border-border rounded-full px-3 py-1">
+                {submissions.length} team{submissions.length !== 1 ? 's' : ''}
+              </span>
             </div>
-            <p className="text-lg font-semibold text-foreground/70">Submissions are currently closed</p>
-            <p className="text-sm text-foreground/40">The organizers will open submissions when the event begins.</p>
+
+            {submissions.length === 0 ? (
+              <p className="text-foreground/40 text-sm py-10 text-center">No projects submitted yet.</p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {submissions.map((s, i) => (
+                  <div
+                    key={s.id}
+                    className="bg-card/40 border border-border rounded-xl p-4 flex items-start gap-4 hover:border-accent/50 transition-colors"
+                  >
+                    <span className="text-accent font-black text-sm tabular-nums w-6 shrink-0 pt-0.5">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground text-sm truncate">{s.project_name}</p>
+                      <p className="text-foreground/50 text-xs mt-0.5">{s.team_name}</p>
+                    </div>
+                    <a
+                      href={s.repo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 text-foreground/40 hover:text-accent transition-colors"
+                      title="Open repository"
+                    >
+                      <Github className="w-4 h-4" />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           /* ── Open state ── */
