@@ -5,6 +5,7 @@ import { SpotlightHero } from '@/components/sections/spotlight-hero'
 import { EventDetails } from '@/components/sections/event-details'
 import { CountdownSection } from '@/components/sections/countdown-section'
 import { Timeline } from '@/components/sections/timeline'
+import { ProjectsDone } from '@/components/sections/projects-done'
 import { Evaluation } from '@/components/sections/evaluation'
 import { Sponsors } from '@/components/sections/sponsors'
 import { Footer } from '@/components/sections/footer'
@@ -63,6 +64,7 @@ export default function Home() {
         <CountdownSection onTimerStart={handleTimerStart} />
         <EventDetails />
         <Timeline />
+        <ProjectsDone />
         <Evaluation />
         <Sponsors />
         <Footer />

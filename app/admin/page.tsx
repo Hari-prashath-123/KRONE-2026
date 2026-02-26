@@ -117,6 +117,10 @@ export default function AdminPage() {
   const [rowExists, setRowExists] = useState(false)
   // Network connectivity state
   const [connectionLost, setConnectionLost] = useState(false)
+  // Projects section lock state
+  const [projectsLocked, setProjectsLocked] = useState(true)
+  const [projectsLockLoading, setProjectsLockLoading] = useState(false)
+  const [projectsCount, setProjectsCount] = useState(0)
 
   // Offset (ms) between server clock and local clock — corrects skew
   const timeOffsetRef = useRef<number>(0)
@@ -359,20 +363,57 @@ export default function AdminPage() {
     }
   }
 
+  // ─── Fetch projects lock state ──────────────────────────────────
+  const fetchProjectsState = async () => {
+    try {
+      const res = await fetch('/api/projects')
+      const json = await res.json()
+      if (!json.error) {
+        setProjectsLocked(json.is_locked)
+        setProjectsCount((json.submissions ?? []).length)
+      }
+    } catch { /* ignore */ }
+  }
+
+  const handleToggleProjectsLock = async () => {
+    setProjectsLockLoading(true)
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'set_lock', is_locked: !projectsLocked }),
+      })
+      const json = await res.json()
+      if (!json.error) {
+        setProjectsLocked(json.is_locked)
+        addLog(`Projects submissions ${json.is_locked ? 'LOCKED' : 'OPENED'}`)
+      } else {
+        addLog(`Projects lock error: ${json.error}`, true)
+      }
+    } catch (err: any) {
+      addLog(`Projects lock network error: ${err?.message}`, true)
+    } finally {
+      setProjectsLockLoading(false)
+    }
+  }
+
   useEffect(() => {
     const init = async () => {
       // Sync client clock with server before the first fetch
       await syncClock()
       // Fetch initial state
       await fetchState()
+      await fetchProjectsState()
     }
     init()
 
     // Poll every 5 s so the admin status panel stays in sync
     const pollInterval = setInterval(fetchState, 5000)
+    const projectsPoll = setInterval(fetchProjectsState, 10000)
 
     return () => {
       clearInterval(pollInterval)
+      clearInterval(projectsPoll)
     }
   }, [])
 
@@ -527,6 +568,37 @@ export default function AdminPage() {
                     {entry}
                   </p>
                 ))}
+          </div>
+        </div>
+
+        {/* ─── Projects Section Control ─────────────────────────── */}
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-700 space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Projects Done 2026</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {projectsCount} submission{projectsCount !== 1 ? 's' : ''} &nbsp;·&nbsp;
+                Status: <span className={projectsLocked ? 'text-red-400 font-semibold' : 'text-green-400 font-semibold'}>
+                  {projectsLocked ? '🔒 Locked' : '🔓 Open'}
+                </span>
+              </p>
+            </div>
+            <button
+              onClick={handleToggleProjectsLock}
+              disabled={projectsLockLoading}
+              className={`px-5 py-3 font-bold rounded-xl text-sm transition-colors disabled:opacity-50 ${
+                projectsLocked
+                  ? 'bg-green-600 hover:bg-green-500 text-white'
+                  : 'bg-red-600 hover:bg-red-500 text-white'
+              }`}
+            >
+              {projectsLockLoading
+                ? '…'
+                : projectsLocked
+                  ? '🔓 Open Submissions'
+                  : '🔒 Lock Submissions'
+              }
+            </button>
           </div>
         </div>
 
