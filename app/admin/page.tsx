@@ -1,7 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useEffect, useRef, useState } from 'react'
+
+// Inline type — no supabase-js dependency on the client
+type CountdownState = {
+  id: string
+  time_remaining: number
+  is_running: boolean
+  end_time: string | null
+  timer_ended: boolean
+  updated_at: string
+}
 
 const COUNTDOWN_ID = 'krone-2026-countdown'
 const ADMIN_USER = 'hari'
@@ -106,6 +115,24 @@ export default function AdminPage() {
   const [error, setError] = useState<string | null>(null)
   const [log, setLog] = useState<string[]>([])
   const [rowExists, setRowExists] = useState(false)
+  // Network connectivity state
+  const [connectionLost, setConnectionLost] = useState(false)
+
+  // Offset (ms) between server clock and local clock — corrects skew
+  const timeOffsetRef = useRef<number>(0)
+
+  const syncClock = async () => {
+    try {
+      const res = await fetch('/', { method: 'HEAD', cache: 'no-store' })
+      const serverDate = res.headers.get('Date')
+      if (serverDate) {
+        const serverTime = new Date(serverDate).getTime()
+        timeOffsetRef.current = serverTime - Date.now()
+      }
+    } catch {
+      // fall back to zero offset on error
+    }
+  }
 
   // Check if already logged in
   useEffect(() => {
@@ -118,13 +145,19 @@ export default function AdminPage() {
     setAuthed(false)
   }
 
-  const addLog = (msg: string, isErr = false) => {
+  // suppressBanner: pass true for network errors so the red error banner
+  // does NOT override the running-timer state in the UI
+  const addLog = (msg: string, isErr = false, suppressBanner = false) => {
     const line = `[${new Date().toLocaleTimeString()}] ${isErr ? '❌ ' : '✅ '}${msg}`
     setLog(prev => [line, ...prev].slice(0, 100))
-    if (isErr) setError(msg)
+    if (isErr && !suppressBanner) setError(msg)
   }
 
   const clearError = () => setError(null)
+
+  // Returns true for network / timeout error messages
+  const isNetworkError = (msg: string): boolean =>
+    /failed to fetch|networkerror|network request failed|err_connection|timed.?out|etimedout/i.test(msg)
 
   const fmt = (s: number) => {
     const h = Math.floor(s / 3600)
@@ -136,59 +169,77 @@ export default function AdminPage() {
   // ─── Fetch current DB state ───────────────────────────────────────
   const fetchState = async () => {
     setDbStatus('Fetching...')
-    const { data, error: err } = await supabase
-      .from('countdown_timers')
-      .select('*')
-      .eq('id', COUNTDOWN_ID)
-      .maybeSingle()
+    try {
+      const res = await fetch('/api/timer')
+      const json = await res.json()
 
-    if (err) {
-      addLog(`fetchState error: ${err.message} (code: ${err.code})`, true)
-      setDbStatus(`Error: ${err.message}`)
-      return
+      if (!res.ok || json.error) {
+        const msg = json.error ?? `HTTP ${res.status}`
+        if (isNetworkError(msg)) {
+          addLog(`Network error: ${msg}`, true, true)
+          setConnectionLost(true)
+          setDbStatus('Connection lost. Reconnecting...')
+        } else {
+          addLog(`fetchState error: ${msg}`, true)
+          setDbStatus(`Error: ${msg}`)
+        }
+        return
+      }
+
+      setConnectionLost(false)
+      const data: CountdownState = json
+
+      setRowExists(true)
+      setIsRunning(data.is_running)
+
+      if (data.is_running && data.end_time) {
+        const endTime = new Date(data.end_time).getTime()
+        const rem = Math.max(0, Math.floor((endTime - (Date.now() + timeOffsetRef.current)) / 1000))
+        setRemaining(rem)
+        setDbStatus(`RUNNING — ${fmt(rem)} remaining | end_time: ${data.end_time}`)
+      } else {
+        setRemaining(data.time_remaining)
+        setDbStatus(`STOPPED — time_remaining: ${data.time_remaining}s | end_time: ${data.end_time ?? 'null'}`)
+      }
+      addLog(`Fetched: is_running=${data.is_running}, end_time=${data.end_time ?? 'null'}`)
+    } catch (err: any) {
+      const msg = err?.message ?? String(err)
+      addLog(`Network error: ${msg}`, true, true)
+      setConnectionLost(true)
+      setDbStatus('Connection lost. Reconnecting...')
     }
-
-    if (!data) {
-      setRowExists(false)
-      setDbStatus('No row in DB yet — click "Create Row" first')
-      addLog('No row found in DB')
-      return
-    }
-
-    setRowExists(true)
-    setIsRunning(data.is_running)
-
-    if (data.is_running && data.end_time) {
-      const endTime = new Date(data.end_time).getTime()
-      const rem = Math.max(0, Math.floor((endTime - Date.now()) / 1000))
-      setRemaining(rem)
-      setDbStatus(`RUNNING — ${fmt(rem)} remaining | end_time: ${data.end_time}`)
-    } else {
-      setRemaining(data.time_remaining)
-      setDbStatus(`STOPPED — time_remaining: ${data.time_remaining}s | end_time: ${data.end_time ?? 'null'}`)
-    }
-    addLog(`Fetched: is_running=${data.is_running}, end_time=${data.end_time ?? 'null'}`)
   }
 
   // ─── Create initial row ───────────────────────────────────────────
   const handleCreateRow = async () => {
     addLog('Creating initial DB row...')
-    const { error: err } = await supabase
-      .from('countdown_timers')
-      .insert({
-        id: COUNTDOWN_ID,
-        time_remaining: 86400,
-        is_running: false,
-        end_time: null,
-        timer_ended: false,
-        updated_at: new Date().toISOString(),
+    try {
+      const res = await fetch('/api/timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          time_remaining: 86400,
+          is_running: false,
+          end_time: null,
+          timer_ended: false,
+          updated_at: new Date().toISOString(),
+        }),
       })
-
-    if (err) {
-      addLog(`INSERT error: ${err.message} (code: ${err.code})`, true)
-    } else {
-      addLog('Row created')
-      await fetchState()
+      const json = await res.json()
+      if (!res.ok || json.error) {
+        const msg = json.error ?? `HTTP ${res.status}`
+        isNetworkError(msg)
+          ? (addLog(`Network error: ${msg}`, true, true), setConnectionLost(true))
+          : addLog(`CREATE error: ${msg}`, true)
+      } else {
+        setConnectionLost(false)
+        addLog('Row created')
+        await fetchState()
+      }
+    } catch (err: any) {
+      const msg = err?.message ?? String(err)
+      addLog(`Network error: ${msg}`, true, true)
+      setConnectionLost(true)
     }
   }
 
@@ -201,36 +252,39 @@ export default function AdminPage() {
       return
     }
 
-    const endTime = new Date(Date.now() + totalSeconds * 1000).toISOString()
+    const endTime = new Date(Date.now() + timeOffsetRef.current + totalSeconds * 1000).toISOString()
     addLog(`Writing to DB: is_running=true, end_time=${endTime}`)
 
-    // Use UPDATE since row already exists
-    const { data, error: err } = await supabase
-      .from('countdown_timers')
-      .update({
-        time_remaining: totalSeconds,
-        is_running: true,
-        end_time: endTime,
-        timer_ended: false,
-        updated_at: new Date().toISOString(),
+    try {
+      const res = await fetch('/api/timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          time_remaining: totalSeconds,
+          is_running: true,
+          end_time: endTime,
+          timer_ended: false,
+          updated_at: new Date().toISOString(),
+        }),
       })
-      .eq('id', COUNTDOWN_ID)
-      .select()
-
-    if (err) {
-      addLog(`UPDATE error: ${err.message} (code: ${err.code})`, true)
-      return
+      const json = await res.json()
+      if (!res.ok || json.error) {
+        const msg = json.error ?? `HTTP ${res.status}`
+        isNetworkError(msg)
+          ? (addLog(`Network error: ${msg}`, true, true), setConnectionLost(true))
+          : addLog(`START error: ${msg}`, true)
+        return
+      }
+      setConnectionLost(false)
+      addLog(`START success — DB row updated: ${JSON.stringify(json)}`)
+      setIsRunning(true)
+      setRemaining(totalSeconds)
+      setDbStatus(`RUNNING — ${fmt(totalSeconds)} remaining`)
+    } catch (err: any) {
+      const msg = err?.message ?? String(err)
+      addLog(`Network error: ${msg}`, true, true)
+      setConnectionLost(true)
     }
-
-    if (!data || data.length === 0) {
-      addLog('UPDATE returned no rows — row may not exist. Click "Create Row" first', true)
-      return
-    }
-
-    addLog(`START success — DB row updated: ${JSON.stringify(data[0])}`)
-    setIsRunning(true)
-    setRemaining(totalSeconds)
-    setDbStatus(`RUNNING — ${fmt(totalSeconds)} remaining`)
   }
 
   // ─── Stop ─────────────────────────────────────────────────────────
@@ -238,30 +292,34 @@ export default function AdminPage() {
     clearError()
     addLog('Writing to DB: is_running=false')
 
-    const { data, error: err } = await supabase
-      .from('countdown_timers')
-      .update({
-        is_running: false,
-        end_time: null,
-        time_remaining: remaining,
-        updated_at: new Date().toISOString(),
+    try {
+      const res = await fetch('/api/timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          is_running: false,
+          end_time: null,
+          time_remaining: remaining,
+          updated_at: new Date().toISOString(),
+        }),
       })
-      .eq('id', COUNTDOWN_ID)
-      .select()
-
-    if (err) {
-      addLog(`STOP update error: ${err.message} (code: ${err.code})`, true)
-      return
+      const json = await res.json()
+      if (!res.ok || json.error) {
+        const msg = json.error ?? `HTTP ${res.status}`
+        isNetworkError(msg)
+          ? (addLog(`Network error: ${msg}`, true, true), setConnectionLost(true))
+          : addLog(`STOP error: ${msg}`, true)
+        return
+      }
+      setConnectionLost(false)
+      addLog('STOP success')
+      setIsRunning(false)
+      setDbStatus(`STOPPED — ${fmt(remaining)} remaining`)
+    } catch (err: any) {
+      const msg = err?.message ?? String(err)
+      addLog(`Network error: ${msg}`, true, true)
+      setConnectionLost(true)
     }
-
-    if (!data || data.length === 0) {
-      addLog('STOP: UPDATE returned no rows', true)
-      return
-    }
-
-    addLog(`STOP success`)
-    setIsRunning(false)
-    setDbStatus(`STOPPED — ${fmt(remaining)} remaining`)
   }
 
   // ─── Reset ────────────────────────────────────────────────────────
@@ -269,35 +327,54 @@ export default function AdminPage() {
     clearError()
     const totalSeconds = hours * 3600 + minutes * 60 + seconds
 
-    const { data, error: err } = await supabase
-      .from('countdown_timers')
-      .update({
-        time_remaining: totalSeconds,
-        is_running: false,
-        end_time: null,
-        timer_ended: false,
-        updated_at: new Date().toISOString(),
+    try {
+      const res = await fetch('/api/timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          time_remaining: totalSeconds,
+          is_running: false,
+          end_time: null,
+          timer_ended: false,
+          updated_at: new Date().toISOString(),
+        }),
       })
-      .eq('id', COUNTDOWN_ID)
-      .select()
-
-    if (err) {
-      addLog(`RESET error: ${err.message} (code: ${err.code})`, true)
-      return
+      const json = await res.json()
+      if (!res.ok || json.error) {
+        const msg = json.error ?? `HTTP ${res.status}`
+        isNetworkError(msg)
+          ? (addLog(`Network error: ${msg}`, true, true), setConnectionLost(true))
+          : addLog(`RESET error: ${msg}`, true)
+        return
+      }
+      setConnectionLost(false)
+      addLog(`RESET success — set to ${fmt(totalSeconds)}`)
+      setIsRunning(false)
+      setRemaining(totalSeconds)
+      setDbStatus(`STOPPED — ${fmt(totalSeconds)} set`)
+    } catch (err: any) {
+      const msg = err?.message ?? String(err)
+      addLog(`Network error: ${msg}`, true, true)
+      setConnectionLost(true)
     }
-
-    if (!data || data.length === 0) {
-      addLog('RESET: UPDATE returned no rows', true)
-      return
-    }
-
-    addLog(`RESET success — set to ${fmt(totalSeconds)}`)
-    setIsRunning(false)
-    setRemaining(totalSeconds)
-    setDbStatus(`STOPPED — ${fmt(totalSeconds)} set`)
   }
 
-  useEffect(() => { fetchState() }, [])
+  useEffect(() => {
+    const init = async () => {
+      // Sync client clock with server before the first fetch
+      await syncClock()
+      // Fetch initial state
+      await fetchState()
+    }
+    init()
+
+    // Poll every 5 s so the admin status panel stays in sync
+    const pollInterval = setInterval(fetchState, 5000)
+
+    return () => {
+      clearInterval(pollInterval)
+    }
+  }, [])
 
   // Poll remaining when running
   useEffect(() => {
@@ -335,6 +412,14 @@ export default function AdminPage() {
             Logout
           </button>
         </div>
+
+        {/* Connection lost banner */}
+        {connectionLost && (
+          <div className="bg-amber-950 border border-amber-600 rounded-xl p-3 flex items-center gap-3">
+            <span className="text-amber-400 text-base animate-spin inline-block">↻</span>
+            <p className="text-amber-300 text-sm font-medium">Connection lost. Reconnecting...</p>
+          </div>
+        )}
 
         {/* Error banner */}
         {error && (

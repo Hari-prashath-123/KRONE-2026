@@ -1,7 +1,16 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { supabase, type CountdownState } from '@/lib/supabase'
+
+// Inline type — no supabase-js dependency on the client
+type CountdownState = {
+  id: string
+  time_remaining: number
+  is_running: boolean
+  end_time: string | null
+  timer_ended: boolean
+  updated_at: string
+}
 
 const COUNTDOWN_ID = 'krone-2026-countdown'
 
@@ -27,6 +36,8 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
   const prevTimeRef = useRef<TimeDisplay>({ hours: '24', minutes: '00', seconds: '00' })
   const [isRunning, setIsRunning] = useState(false)
   const [mounted, setMounted] = useState(false)
+  // Network connectivity state
+  const [connectionLost, setConnectionLost] = useState(false)
   const endTimeRef = useRef<number | null>(null)
   const rafRef = useRef<NodeJS.Timeout | null>(null)
   // Track whether the initial fetch is done (so we don't fire onTimerStart on page load)
@@ -36,6 +47,22 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
   // Stable ref for the callback (avoids re-subscribing on parent re-renders)
   const onTimerStartRef = useRef(onTimerStart)
   useEffect(() => { onTimerStartRef.current = onTimerStart }, [onTimerStart])
+
+  // Offset (ms) between server clock and local clock — corrects skew
+  const timeOffsetRef = useRef<number>(0)
+
+  const syncClock = async () => {
+    try {
+      const res = await fetch('/', { method: 'HEAD', cache: 'no-store' })
+      const serverDate = res.headers.get('Date')
+      if (serverDate) {
+        const serverTime = new Date(serverDate).getTime()
+        timeOffsetRef.current = serverTime - Date.now()
+      }
+    } catch {
+      // fall back to zero offset on error
+    }
+  }
 
   const formatTime = useCallback((s: number): TimeDisplay => {
     const hours = Math.floor(s / 3600)
@@ -48,11 +75,11 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
     }
   }, [])
 
-  // Tick function: calculates remaining from endTimeRef using local clock
+  // Tick function: calculates remaining from endTimeRef using server-corrected clock
   const tick = useCallback(() => {
     if (!endTimeRef.current) return
 
-    const now = Date.now()
+    const now = Date.now() + timeOffsetRef.current
     const remaining = Math.max(0, Math.floor((endTimeRef.current - now) / 1000))
     const newTime = formatTime(remaining)
 
@@ -77,7 +104,7 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
   const applyState = useCallback((data: CountdownState) => {
     if (data.is_running && data.end_time) {
       const endTime = new Date(data.end_time).getTime()
-      const now = Date.now()
+      const now = Date.now() + timeOffsetRef.current
       const remaining = Math.max(0, Math.floor((endTime - now) / 1000))
 
       if (remaining > 0) {
@@ -121,51 +148,38 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
   // 1. Mount + initial fetch + realtime subscription + polling fallback
   useEffect(() => {
     setMounted(true)
-    let subscription: ReturnType<typeof supabase.channel> | null = null
     let pollInterval: NodeJS.Timeout | null = null
 
     const fetchAndApply = async () => {
-      const { data, error } = await supabase
-        .from('countdown_timers')
-        .select('*')
-        .eq('id', COUNTDOWN_ID)
-        .single()
-
-      if (data && !error) {
-        applyState(data)
+      try {
+        const res = await fetch('/api/timer')
+        if (!res.ok) return
+        const data = await res.json()
+        if (data && !data.error) {
+          applyState(data as CountdownState)
+          setConnectionLost(false)
+        }
+      } catch (err) {
+        // Network failure — show reconnecting banner; polling will retry
+        setConnectionLost(true)
       }
     }
 
     const init = async () => {
+      // Sync client clock with server before the first fetch
+      await syncClock()
       // Fetch current state immediately
       await fetchAndApply()
       // Mark initial load done — transitions detected after this point
       initialFetchDoneRef.current = true
 
-      // Subscribe to real-time changes
-      subscription = supabase
-        .channel('countdown-viewer')
-        .on('postgres_changes', {
-          event: '*',
-          schema: 'public',
-          table: 'countdown_timers',
-          filter: `id=eq.${COUNTDOWN_ID}`,
-        }, (payload) => {
-          const record = payload.new as CountdownState
-          if (record) {
-            applyState(record)
-          }
-        })
-        .subscribe()
-
-      // Polling fallback every 3 seconds to catch missed realtime events
-      pollInterval = setInterval(fetchAndApply, 3000)
+      // Poll /api/timer every 2 s to keep viewer in sync
+      pollInterval = setInterval(fetchAndApply, 2000)
     }
 
     init()
 
     return () => {
-      if (subscription) supabase.removeChannel(subscription)
       if (pollInterval) clearInterval(pollInterval)
     }
   }, [applyState])
@@ -291,6 +305,13 @@ export function CountdownTimer({ onTimerStart }: CountdownTimerProps = {}) {
           <Digit key={`s-${i}`} char={c} prevChar={prevTimeRef.current.seconds[i] || '0'} animate={isRunning} />
         ))}
       </div>
+
+      {/* Connection lost banner */}
+      {connectionLost && (
+        <p className="mt-6 text-xs font-medium tracking-widest text-amber-400 animate-pulse text-center uppercase">
+          ⚠ Connection lost. Reconnecting...
+        </p>
+      )}
 
       {/* Status text */}
       {!isRunning && displayTime.hours === '00' && displayTime.minutes === '00' && displayTime.seconds === '00' && (
